@@ -51,13 +51,23 @@ Loader.prototype =
 		game.load.setPreloadSprite(loadingBar);
 
 		// Content to load
-		game.load.image('cat', 'assets/test.jpg');
+		game.load.image('ship', 'assets/ship.png');
+		game.load.image('enemy', 'assets/enemy_0.png');
+		game.load.image('overscreen', 'assets/overscreen.png');
+		game.load.image('background', 'assets/background_.png');
+		game.load.spritesheet('explosion', 'assets/explosion.png', 128, 128);
+
+		game.load.script('filter', 'water.js');
+
+		game.load.image('rocket', 'assets/rocket.png');
+		game.load.image('smoke', 'assets/smoke.png');
+
 
 		// Testing loading bar!
-		for (var i = 0; i < 10000; i++) 
+/*		for (var i = 0; i < 10000; i++) 
 		{
 			game.load.image('cat' + i, 'assets/test.jpg');
-		};
+		};*/
 	},
 	create: function()
 	{

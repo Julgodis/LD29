@@ -5,11 +5,12 @@
 *
 */
 
-var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
 game.state.add('start', Start);
 game.state.add('loading', Loader);
 game.state.add('intro', Intro);
+game.state.add('test', Test);
 
 // Run game!
 game.state.start('start');

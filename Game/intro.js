@@ -13,6 +13,9 @@ Intro.prototype =
 
 	create: function()
 	{
-		game.add.sprite(0, 0, 'cat');
+		var sprite = game.add.sprite(0, 0, 'cat');
+		sprite.scale.setTo(640/1024, 480/1024);
+
+		game.state.start('test');
 	}
 };
