@@ -88,5 +88,7 @@ function sound_toggle(id)
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-39491934-3', 'github.com');
+ga('create', 'UA-39491934-3', {
+  'cookieDomain': 'none'
+});
 ga('send', 'pageview');
