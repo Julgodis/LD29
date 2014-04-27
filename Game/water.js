@@ -11,19 +11,19 @@ Phaser.Filter.Water = function (game) {
     Phaser.Filter.call(this, game);
 
     this.uniforms.alpha = { type: '1f', value: 1.0 };
-    this.uniforms.shift = { type: '1f', value: 0 };
-    this.uniforms.speed = { type: '2f', value: { x: 0.3, y: 0.4 } };
     this.uniforms.offset = { type: '2f', value: { x: 0.0, y: 0.0 } };
 
     this.fragmentSrc = [
 
         "precision mediump float;",
+
+        "varying vec2       vTextureCoord;",
+        "varying vec4       vColor;",
         "uniform vec2      resolution;",
         "uniform float     time;",
         "uniform float     alpha;",
-        "uniform vec2      speed;",
-        "uniform float     shift;",
         "uniform vec2      offset;",
+        "uniform sampler2D uSampler;",
 
         "float rand(vec2 n) {",
             "return fract(cos(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);",
@@ -54,18 +54,17 @@ Phaser.Filter.Water = function (game) {
             "const vec3 c5 = vec3(0.2);",
             "const vec3 c6 = vec3(0.7);",
 
-            "vec2 uv = gl_FragCoord.xy/(resolution.xy);",
+            "vec2 uv = vTextureCoord.xy;///(resolution.xy);",
 			"float dx = 8.0*(1.0/resolution.x);",
    			"float dy = 8.0*(1.0/resolution.y);",
     		"vec2 coord = vec2(dx*floor(uv.x/dx), dy*floor(uv.y/dy));",
             "vec2 pos = (coord*resolution.xy) + offset;",
             "vec2 p = pos * 8.0 / resolution.xy;",
-            "float q = fbm(p - time * 0.1);",
+            "float q = fbm(p - 1.0 * 0.1);",
             //"vec2 r = p;",
-            "vec2 r = vec2(fbm(p + q + time * speed.x - p.x - p.y), fbm(p + q - time * speed.y));",
+            "vec2 r = vec2(fbm(p + q + 1.0 * 0.3 - p.x - p.y), fbm(p + q - 1.0 * 0.4));",
             "vec3 c = mix(c1, c2, fbm(p + r)) + mix(c3, c4, r.x) - mix(c5, c6, r.y);",
-            "gl_FragColor = vec4(c * cos(shift * (coord.y*resolution.y) / resolution.y) * 0.5, alpha);",
-            //"gl_FragColor = vec4(coord.x/2.0, 0, coord.y, 1);",
+            "gl_FragColor = vec4(c * cos(1.0 * (coord.y*resolution.y) / resolution.y) * 0.5, 1);//texture2D(uSampler, coord);// * vec4(c * cos(shift * (coord.y*resolution.y) / resolution.y) * 1.0, alpha);", // vec4(floor(uv.x/dx)*dx, 0, coord.y, 1);
         "}"
     ];
 
@@ -125,6 +124,139 @@ Object.defineProperty(Phaser.Filter.Water.prototype, 'speed', {
 });
 
 Object.defineProperty(Phaser.Filter.Water.prototype, 'offset', {
+
+    get: function() {
+        return this.uniforms.offset.value;
+    },
+
+    set: function(value) {
+        this.uniforms.offset.value = value;
+    }
+
+});
+
+Phaser.Filter.WaterForeground = function (game) {
+
+    Phaser.Filter.call(this, game);
+
+    this.uniforms.alpha = { type: '1f', value: 1.0 };
+    this.uniforms.shift = { type: '1f', value: 0 };
+    this.uniforms.speed = { type: '2f', value: { x: 0.5, y: 0.4 } };
+    this.uniforms.offset = { type: '2f', value: { x: 0.0, y: 0.0 } };
+
+    this.fragmentSrc = [
+
+        "precision mediump float;",
+
+        "varying vec2       vTextureCoord;",
+        "varying vec4       vColor;",
+        "uniform vec2      resolution;",
+        "uniform float     time;",
+        "uniform float     alpha;",
+        "uniform vec2      speed;",
+        "uniform float     shift;",
+        "uniform vec2      offset;",
+        "uniform sampler2D uSampler;",
+
+        "float rand(vec2 n) {",
+            "return fract(cos(dot(n, vec2(12.9898, 4.1414))) * 53758.5453);",
+        "}",
+
+        "float noise(vec2 n) {",
+            "const vec2 d = vec2(0.0, 1.0);",
+            "vec2 b = floor(n), f = smoothstep(vec2(0.0), vec2(1.0), fract(n));",
+            "return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);",
+        "}",
+
+        "float fbm(vec2 n) {",
+            "float total = 0.0, amplitude = 1.4;",
+            "for (int i = 0; i < 4; i++) {",
+                "total += noise(n) * amplitude;",
+                "n += n;",
+                "amplitude *= 0.5;",
+            "}",
+            "return total;",
+        "}",
+
+        "void main() {",
+
+            "const vec3 c1 = vec3(0.5, 0.0, 0.6);",
+            "const vec3 c2 = vec3(0.0, 0.0, 0.8);",
+            "const vec3 c3 = vec3(0.0, 0.6, 0.9);",
+            "const vec3 c4 = vec3(0.0, 0.8, 0.9);",
+            "const vec3 c5 = vec3(0.2);",
+            "const vec3 c6 = vec3(0.7);",
+
+            "vec2 uv = vTextureCoord.xy;///(resolution.xy);",
+			"float dx = 8.0*(1.0/resolution.x);",
+   			"float dy = 8.0*(1.0/resolution.y);",
+    		"vec2 coord = vec2(dx*floor(uv.x/dx), dy*floor(uv.y/dy));",
+            "vec2 pos = (coord*resolution.xy) + offset;",
+            "vec2 p = pos * 8.0 / resolution.xy;",
+            "float q = fbm(p - time * 0.1);",
+            //"vec2 r = p;",
+            "vec2 r = vec2(fbm(p + q + time * speed.x - p.x - p.y), fbm(p + q - time * speed.y));",
+            "vec3 c = mix(c1, c2, fbm(p + r)) + mix(c3, c4, r.x) - mix(c5, c6, r.y);",
+            "gl_FragColor = vec4(c * cos(shift * (coord.y*resolution.y) / resolution.y) * 0.5, 0.4);", // vec4(floor(uv.x/dx)*dx, 0, coord.y, 1);
+        "}"
+    ];
+
+};
+
+Phaser.Filter.WaterForeground.prototype = Object.create(Phaser.Filter.prototype);
+Phaser.Filter.WaterForeground.prototype.constructor = Phaser.Filter.WaterForeground;
+
+Phaser.Filter.WaterForeground.prototype.init = function (width, height, alpha, shift) {
+
+    this.setResolution(width, height);
+
+    if (typeof alpha !== 'undefined') {
+        this.uniforms.alpha.value = alpha;
+    }
+
+    if (typeof shift !== 'undefined') {
+        this.uniforms.shift.value = shift;
+    }
+
+};
+
+Object.defineProperty(Phaser.Filter.WaterForeground.prototype, 'alpha', {
+
+    get: function() {
+        return this.uniforms.alpha.value;
+    },
+
+    set: function(value) {
+        this.uniforms.alpha.value = value;
+    }
+
+});
+
+Object.defineProperty(Phaser.Filter.WaterForeground.prototype, 'shift', {
+
+    get: function() {
+        return this.uniforms.shift.value;
+    },
+
+    set: function(value) {
+        this.uniforms.shift.value = value;
+    }
+
+});
+
+Object.defineProperty(Phaser.Filter.WaterForeground.prototype, 'speed', {
+
+    get: function() {
+        return this.uniforms.speed.value;
+    },
+
+    set: function(value) {
+        this.uniforms.speed.value = value;
+    }
+
+});
+
+Object.defineProperty(Phaser.Filter.WaterForeground.prototype, 'offset', {
 
     get: function() {
         return this.uniforms.offset.value;
