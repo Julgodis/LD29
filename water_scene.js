@@ -202,8 +202,8 @@ WaterEffect.prototype =
 		foregroundFilter.kill();
 		backgroundFilter.kill();
 
-		this.missileGroup.callAll('kill');
-		this.bulletGroup.callAll('kill');
+		this.missileGroup.callAll('killAll');
+		this.bulletGroup.callAll('killAll');
 		this.enemies.callAll('kill');
 		this.circels.callAll('kill');
 		this.explosionGroup.callAll('kill');
