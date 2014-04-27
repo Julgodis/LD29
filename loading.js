@@ -53,7 +53,7 @@ Loader.prototype =
 		game.load.setPreloadSprite(loadingBar);
 
 		// Content to load
-		game.load.spritesheet('ship', 'assets/ship.png', 32, 21);
+		game.load.spritesheet('ship', ['assets/ship.png','assets/ship.PNG'], 32, 21);
 		game.load.spritesheet('explosion', 'assets/explosion.png', 128/4, 128/4);
 		game.load.spritesheet('water', 'assets/water.png', 16, 16);
 		game.load.spritesheet('water_top', 'assets/water_top.png', 16, 16);
