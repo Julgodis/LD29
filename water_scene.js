@@ -91,7 +91,9 @@ WaterEffect.prototype =
 		foregroundFilter.width = game.width;
 		foregroundFilter.height = game.height;
 		foregroundFilter.isFixedCamera = true;
-		foregroundFilter.filters = [ filterOver ];
+                
+                if(game.score.detail <= 1)
+                    foregroundFilter.filters = [ filterOver ];
 
 		var displacementTexture = PIXI.Texture.fromImage("assets/displacement_map.jpg");
     	this.displacementFilter = new PIXI.DisplacementFilter(displacementTexture);
@@ -392,7 +394,7 @@ WaterEffect.prototype =
 			player.moveY(1);
 		}
 
-		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && this.canMove)
+		if((game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.keyboard.isDown(Phaser.Keyboard.B)) && this.canMove)
 		{
 			game.score.waitForStart = false;
 			player.fireMissiles(this);

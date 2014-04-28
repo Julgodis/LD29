@@ -56,6 +56,11 @@ function graphics_toggle(id)
 	if(game.score.detail == 0)
 	{
 		game.score.detail = 1;
+		document.getElementById(id).innerHTML = "Very Low graphics";
+	}
+	else if(game.score.detail == 1)
+	{
+		game.score.detail = 2;
 		document.getElementById(id).innerHTML = "High graphics";
 	}
 	else

@@ -22,7 +22,7 @@ Controls.prototype =
 		moveLabel = game.add.bitmapText((w / 2) - 350, (h / 4) + 60, 'pixel_font', 'Movement: WASD', 12);
 		aimLabel = game.add.bitmapText((w / 2) - 350, (h / 4) + 80, 'pixel_font',  'Aim:      MOUSE', 12);
 		aimLabel = game.add.bitmapText((w / 2) - 350, (h / 4) + 100, 'pixel_font', 'Shoot:    LEFT-MOUSE BUTTON', 12);
-		aimLabel = game.add.bitmapText((w / 2) - 350, (h / 4) + 120, 'pixel_font', 'Missiles: SPACEBAR', 12);
+		aimLabel = game.add.bitmapText((w / 2) - 350, (h / 4) + 120, 'pixel_font', 'Missiles: SPACEBAR / B', 12);
 
 		// Less then one week ago Alien fishes land their spaceshipes 'Beneath the surface' in the sea. Your mission is to destroy as many alien fishes as you can!
 
