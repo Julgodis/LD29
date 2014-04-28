@@ -18,7 +18,7 @@ WaterEffect.prototype =
 		filter.alpha = 0.2;
 
 		this.group = game.add.group();
-    	backgroundFilter = game.add.sprite(0, 0, 'cat', null, this.group);
+    	backgroundFilter = game.add.sprite(0, 0, 'background', null, this.group);
 		backgroundFilter.width = game.width;
 		backgroundFilter.height = game.height;
 		backgroundFilter.isFixedCamera = true;
@@ -87,13 +87,15 @@ WaterEffect.prototype =
 		filterOver = game.add.filter('WaterForeground', game.width, game.height);
 		filterOver.alpha = 0.2;
 
-    	foregroundFilter = game.add.sprite(0, 0, 'cat', null, this.group);
+    	foregroundFilter = game.add.sprite(0, 0, 'background', null, this.group);
 		foregroundFilter.width = game.width;
 		foregroundFilter.height = game.height;
 		foregroundFilter.isFixedCamera = true;
                 
                 if(game.score.detail <= 1)
                     foregroundFilter.filters = [ filterOver ];
+                    else
+                    foregound.Filter.alpha = 0;
 
 		var displacementTexture = PIXI.Texture.fromImage("assets/displacement_map.jpg");
     	this.displacementFilter = new PIXI.DisplacementFilter(displacementTexture);
@@ -107,8 +109,9 @@ WaterEffect.prototype =
 
     	if(game.score.detail == 0) 
     		this.group.filters = [ this.displacementFilter/*, this.pixelateFilter*/ ];
-    	else
+    	else if(game.score.detail == 1)
     		this.group.filters = [ this.pixelateFilter ];
+        
 
 
     	game.camera.follow(player.sprite);
