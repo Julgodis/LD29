@@ -112,8 +112,6 @@ WaterEffect.prototype =
     	else if(game.score.detail == 1)
     		this.group.filters = [ this.pixelateFilter ];
         
-
-
     	game.camera.follow(player.sprite);
     	//game.camera.deadzone = new Phaser.Rectangle(game.width / 3, game.height / 3, game.width / 3, game.height / 3);
     	game.camera.focusOnXY(0, 0);
