@@ -95,7 +95,7 @@ WaterEffect.prototype =
                 if(game.score.detail <= 1)
                     foregroundFilter.filters = [ filterOver ];
                     else
-                    foreground.Filter.alpha = 0;
+                    foregroundFilter.alpha = 0;
 
 		var displacementTexture = PIXI.Texture.fromImage("assets/displacement_map.jpg");
     	this.displacementFilter = new PIXI.DisplacementFilter(displacementTexture);
